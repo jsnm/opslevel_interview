@@ -22,7 +22,7 @@
             }
         })
 
-        let make_todo = function make_todo(todo) {
+        let make_todo = function make_todo(todo, i) {
             let component = document.createElement('li')
 
             let check_box = document.createElement('input')
@@ -38,25 +38,35 @@
                 todo.text = e.target.value
             }
 
+            let del = document.createElement('button')
+            del.innerText = 'x'
+            del.onclick = (e) => {
+                todo_model.splice(i, 1)
+                render()
+            }
+
             component.appendChild(check_box)
             component.appendChild(input)
-            
+            component.appendChild(del)
+
             return component
         }
 
         let render = function render(model) {
-            let todo_list = document.querySelector('#todo-list')
+            while (todo_list.firstChild) {
+                todo_list.removeChild(todo_list.firstChild)
+            }
 
             for (let i in todo_model) {
                 todo = todo_model[i]
-                todo_list.appendChild(make_todo(todo))
+                todo_list.appendChild(make_todo(todo, i))
              }
         }
 
         add_todo_button.onclick = function(e) {
-            todo = {checked: false, text: ''}
-            todo_model.push(todo)
-            todo_list.appendChild(make_todo(todo))
+            let todo = {checked: false, text: ''}
+            let i = todo_model.push(todo) - 1
+            todo_list.appendChild(make_todo(todo, i))
         }
 
         render()
