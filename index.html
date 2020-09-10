@@ -12,15 +12,7 @@
         let todo_list = document.querySelector('#todo-list')
         let add_todo_button = document.querySelector('#add-todo')
 
-        let old_todos = JSON.parse(localStorage.getItem('todo_model')) || []
-        let todo_model = new Proxy(old_todos, {
-            set: function(obj, prop, value) {
-                console.log(obj, prop, value)
-                obj[prop] = value
-                localStorage.setItem('todo_model', JSON.stringify(todo_model))
-                return true
-            }
-        })
+        let todo_model = JSON.parse(localStorage.getItem('todo_model')) || []
 
         let make_todo = function make_todo(todo, i) {
             let component = document.createElement('li')
@@ -30,18 +22,22 @@
             check_box.checked = todo.checked
             check_box.onchange = (e) => {
                 todo.checked = e.target.checked
+                save()
             }
 
             let input = document.createElement('input')
+            input.setAttribute("type", "text")
             input.value = todo.text
             input.onchange = (e) => {
                 todo.text = e.target.value
+                save()
             }
 
             let del = document.createElement('button')
             del.innerText = 'x'
             del.onclick = (e) => {
                 todo_model.splice(i, 1)
+                save()
                 render()
             }
 
@@ -50,6 +46,10 @@
             component.appendChild(del)
 
             return component
+        }
+
+        let save = function save() {
+            localStorage.setItem('todo_model', JSON.stringify(todo_model))
         }
 
         let render = function render(model) {
@@ -66,7 +66,8 @@
         add_todo_button.onclick = function(e) {
             let todo = {checked: false, text: ''}
             let i = todo_model.push(todo) - 1
-            todo_list.appendChild(make_todo(todo, i))
+            save()
+            render()
         }
 
         render()
