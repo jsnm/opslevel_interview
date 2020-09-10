@@ -1,0 +1,42 @@
+<head>
+    <style type="text/css">
+    
+    </style>
+</head>
+<body>
+    <h3>TODO List:</h3>
+        <button id='add-todo'>+</button>
+        <ol id="todo-list"> 
+            <li>
+            </li>
+        </ol>
+    <script type="text/javascript">
+        let todo_list = document.querySelector('#todo-list')
+        let add_todo_button = document.querySelector('#add-todo')
+
+        let todo_model = []
+
+        let make_todo = function(todo) {
+            let component = document.createElement('li')
+            let check_box = document.createElement('input')
+            check_box.setAttribute('type', 'checkbox')
+            check_box.checked = todo.checked
+            let input = document.createElement('input')
+            input.textContent = todo.text
+
+            component.appendChild(check_box)
+            component.appendChild(input)
+            
+            return component
+        }
+
+        let render = function render(model) {
+            let todo_list = document.querySelector('#todo-list')
+        }
+
+        add_todo_button.onclick = function(e) {
+            todo_list.appendChild(make_todo({checked: false, text: ''}))
+        }
+
+    </script>
+</body>
