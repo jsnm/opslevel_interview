@@ -1,12 +1,53 @@
 <head>
     <style type="text/css">
-    
+        body {
+            background: #d4d2d2;
+        }
+
+        h1 {
+            text-align: center;
+        }
+        
+        ul {
+            list-style-type: none;
+            display: flex;
+            flex-direction: column
+        }
+
+        li {
+            display: flex;
+            flex-direction: row;
+        }
+        div {
+            margin: auto;
+            width: 80%;
+        }
+
+        #add-todo {
+            margin-left: 61px;
+            margin-top: -13px;
+        }
+
+        #hint {
+            position: fixed;
+            margin: 9px 0px 0px 90px;
+            line-height: 9px;
+            font-size: 14px;
+            z-index: -1;
+        }
+
+        input[type=text] {
+            flex: 1;
+        }
     </style>
 </head>
 <body>
-    <h3>TODO List:</h3>
-    <button id='add-todo'>+</button>
-    <ol id="todo-list"></ol>
+    <h1>TODO List</h3>
+    <div id='main'> 
+        <div id='hint'><-click to start adding todos!</div>
+        <ul id="todo-list"></ul>
+        <button id='add-todo'>+</button>
+    </div>
 
     <script type="text/javascript">
         let todo_list = document.querySelector('#todo-list')
