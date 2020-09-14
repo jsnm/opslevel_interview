@@ -1,0 +1,11 @@
+const CREATE_TODO = 'CREATE_TODO'
+const DELETE_TODO = 'DELETE_TODO'
+const EDIT_TODO   = 'EDIT_TODO'
+const TOGGLE_TODO = 'TOGGLE_TODO'
+
+export {
+    CREATE_TODO,
+    DELETE_TODO,
+    EDIT_TODO,
+    TOGGLE_TODO,
+}
