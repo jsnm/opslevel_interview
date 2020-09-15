@@ -55,7 +55,7 @@
 
         let todo_model = JSON.parse(localStorage.getItem('todo_model')) || []
 
-        let make_todo = function make_todo(todo, i) {
+        let make_todo = (todo, i) => {
             let component = document.createElement('li')
 
             let check_box = document.createElement('input')
@@ -89,11 +89,11 @@
             return component
         }
 
-        let save = function save() {
+        let save = () => {
             localStorage.setItem('todo_model', JSON.stringify(todo_model))
         }
 
-        let render = function render(model) {
+        let render = () => {
             while (todo_list.firstChild) {
                 todo_list.removeChild(todo_list.firstChild)
             }
