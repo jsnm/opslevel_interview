@@ -44,6 +44,7 @@
 <body>
     <h1>TODO List</h3>
     <div id='main'> 
+        <div id='status'></div>
         <div id='hint'><-click to start adding todos!</div>
         <ul id="todo-list"></ul>
         <button id='add-todo'>+</button>
@@ -52,8 +53,43 @@
     <script type="text/javascript">
         let todo_list = document.querySelector('#todo-list')
         let add_todo_button = document.querySelector('#add-todo')
+        let status = document.querySelector('#status')
 
-        let todo_model = JSON.parse(localStorage.getItem('todo_model')) || []
+        let default = {
+            todos: [],
+            priorities: {},
+            missing_priorities: []
+        }
+
+        let model = JSON.parse(localStorage.getItem('model')) || default
+
+        let priority_map = {}
+        let missing_priorities = []
+        let max_priority = 0
+
+        // for (i in todo_model) {
+        //     let priority = parseInt(todo_model[i].priority, 10)
+        //     if (priority > max_priority) {
+        //         max_priority = priority
+        //     }
+
+        //     if (priority in priority_map) {
+        //         priority_map[priority] += 1
+        //     }
+        //     else {
+        //         priority_map[priority] = 1
+        //     }
+        // }
+
+        // for (let i = 1; i <= max_priority; i++) {
+        //     if (i in priority_map) {
+        //         continue
+        //     }
+        //     else {
+        //         missing_priorities.push(i)
+        //     }
+        // }
+
 
         let make_todo = (todo, i) => {
             let component = document.createElement('li')
@@ -63,7 +99,7 @@
             check_box.checked = todo.checked
             check_box.onchange = (e) => {
                 todo.checked = e.target.checked
-                save()
+                save(todo)
             }
 
             let input = document.createElement('input')
@@ -71,43 +107,77 @@
             input.value = todo.text
             input.onchange = (e) => {
                 todo.text = e.target.value
-                save()
+                save(todo)
+            }
+
+            let priority = document.createElement('input')
+            priority.setAttribute("type", "number")
+            priority.value = todo.priority
+            priority.min = 1
+            priority.defaultValue = 1
+            priority.onchange = (e) => {
+                priority_value =  e.target.value
+
+                if (priority_value < 1) {
+                    priority_value = 1
+                }
+                todo.priority = priority_value
+                save(todo)
+                render()
             }
 
             let del = document.createElement('button')
             del.innerText = 'x'
             del.onclick = (e) => {
-                todo_model.splice(i, 1)
-                save()
+                model.todos.splice(i, 1)
+                save(todo)
                 render()
             }
 
             component.appendChild(check_box)
             component.appendChild(input)
+            component.appendChild(priority)
             component.appendChild(del)
 
             return component
         }
 
-        let save = () => {
-            localStorage.setItem('todo_model', JSON.stringify(todo_model))
+        let save = (todos) => {
+            localStorage.setItem('model', JSON.stringify(model.todos))
         }
 
         let render = () => {
+            // remove items 
             while (todo_list.firstChild) {
                 todo_list.removeChild(todo_list.firstChild)
             }
 
-            for (let i in todo_model) {
-                todo = todo_model[i]
+            // add items 
+            for (let i in model.todos) {
+                todo = model.todos[i]
                 todo_list.appendChild(make_todo(todo, i))
              }
+
+            let priority_string = ''
+             for (i in model.priorities) {
+                let n = model.priorities[i]
+                if (n > 1) {
+                    priority_string += `${n} priority ${i}, `
+                }
+             }
+
+             if (missing_priorities.length > 1) {
+                priority_string += 'missing priorities = ' 
+                priority_string += missing_priorities
+             }
+
+             status.innerHTML = priority_string
         }
 
         add_todo_button.onclick = function(e) {
-            let todo = {checked: false, text: ''}
+            let todo = {checked: false, text: '', priority: 1}
             let i = todo_model.push(todo) - 1
-            save()
+            save(todo)
             render()
         }
 

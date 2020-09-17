@@ -19,3 +19,10 @@ One could add many features to the front end, like adding lifecycle features (ca
 ##### dev
 It's arguably elegant that it's single file app - however once complexity sets in we'll want to separate concerns. Separate css, js from the html entrypoint to begin, and eventually we'll want to add in libraries and with that yarn + webpack, etc. Also, as the feature set grows the data model and render complexity may warrant using a framework du jour like react/redux.  
 
+
+##### todo
+
+1. set priority as a positive integer
+2. show list of priorities that occur > 1 times
+3. show missing priorities [1, max_priority]
+
